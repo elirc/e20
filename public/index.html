@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ERP workshop</title>
+    <link rel="stylesheet" href="/workbench.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="eyebrow">ACME / LEARNING EDITION</span>
+        <h1>ERP workshop</h1>
+        <p>
+          Customers, inventory, and project delivery in one local workspace.
+        </p>
+      </div>
+      <span class="badge">Fictional local business</span>
+    </header>
+    <main>
+      <section id="login-panel" class="card">
+        <h2>Sign in</h2>
+        <p>
+          Use an account from the credentials file created by setup. Sessions
+          last 30 minutes.
+        </p>
+        <form id="login-form">
+          <label
+            >Email<input
+              name="email"
+              type="email"
+              autocomplete="username"
+              required /></label
+          ><label
+            >Password<input
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="256" /></label
+          ><button>Sign in</button>
+        </form>
+      </section>
+      <div id="workspace" hidden>
+        <section class="toolbar card">
+          <div>
+            <strong id="identity"></strong>
+            <p id="roles"></p>
+          </div>
+          <label
+            >Company<select id="company" aria-label="Company"></select></label
+          ><button id="logout" class="secondary">Sign out</button>
+        </section>
+        <nav id="navigation" aria-label="Modules"></nav>
+        <section class="card">
+          <div class="section-title">
+            <div>
+              <span class="eyebrow">MASTER DATA & DELIVERY</span>
+              <h2 id="module-title">Customers</h2>
+              <p id="module-help"></p>
+            </div>
+            <button id="new">New record</button>
+          </div>
+          <div class="toolbar">
+            <label
+              >Search records<input
+                id="search"
+                type="search"
+                placeholder="Search this module" /></label
+            ><button id="refresh" class="secondary">Refresh list</button
+            ><button id="export-records" class="secondary">
+              Export current module
+            </button>
+          </div>
+          <p id="count"></p>
+          <div id="records" class="records"></div>
+          <div class="pagination">
+            <button id="previous" class="secondary">Previous</button
+            ><span id="page"></span
+            ><button id="next" class="secondary">Next</button>
+          </div>
+        </section>
+      </div>
+      <section id="editor-panel" class="card" hidden>
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">REVIEW & SAVE</span>
+            <h2 id="editor-title"></h2>
+            <p id="editor-version"></p>
+          </div>
+          <button id="close-editor" class="secondary">Close editor</button>
+        </div>
+        <form id="editor">
+          <div id="fields" class="fields"></div>
+          <div class="actions">
+            <button id="save">Save record</button
+            ><button id="reload-record" type="button" class="secondary">
+              Load current record</button
+            ><button id="export-draft" type="button" class="secondary">
+              Export draft</button
+            ><button id="delete" type="button" class="danger">
+              Delete record
+            </button>
+          </div>
+        </form>
+        <p id="draft-help">
+          Unsaved changes stay in this tab. Export your draft before closing it.
+        </p>
+      </section>
+      <div id="message" role="status" aria-live="polite"></div>
+      <footer>
+        USD / whole stock units. This workshop records local business data. No
+        payment, email, carrier, or tax service is connected.
+      </footer>
+    </main>
+    <script type="module" src="/workbench.js"></script>
+  </body>
+</html>
