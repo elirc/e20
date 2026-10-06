@@ -16,9 +16,7 @@ This is on-stack for TypeScript and Node roles: Fastify hooks, Zod parsing with 
 - Days 3-5: deep dive, one sitting each on the transaction boundary, the receipt rollback, and stale edits.
 - Days 6-7: `03-CODE-READING-DRILL.md`, answers closed.
 - Days 8-9: rehearse `02-STORIES-AND-RESUME.md` aloud; time the 60-second summary.
-- Days 10-12: `04-TAKE-HOME.md`. Run one test at a time; the full suite is slow.
-- Day 13: `05-SYSTEM-DESIGN-FOLLOWUPS.md` on a whiteboard.
-- Daily: `06-FLASHCARDS.md`.
+- Days 10-13: `04-TAKE-HOME.md`. Run one test at a time; the full suite is slow.
 
 ## Files
 
@@ -26,7 +24,5 @@ This is on-stack for TypeScript and Node roles: Fastify hooks, Zod parsing with 
 - [02-STORIES-AND-RESUME.md](02-STORIES-AND-RESUME.md)
 - [03-CODE-READING-DRILL.md](03-CODE-READING-DRILL.md)
 - [04-TAKE-HOME.md](04-TAKE-HOME.md)
-- [05-SYSTEM-DESIGN-FOLLOWUPS.md](05-SYSTEM-DESIGN-FOLLOWUPS.md)
-- [06-FLASHCARDS.md](06-FLASHCARDS.md)
 
 One habit to carry into the interview from `astraupskill/VERIFICATION.md`: the limits are part of the answer. This is USD-only, whole stock quantities, no tax, no period closing, no partial fulfillment, and manufacturing and reconciliation stock modes are rejected rather than faked. Naming those first is what makes the rest of the claims credible.

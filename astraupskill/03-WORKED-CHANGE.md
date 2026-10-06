@@ -45,4 +45,4 @@ For an invoice linked to the order, the complete matching quantities and rates a
 
 ## Review the change like a teammate
 
-Describe the trigger, the previous defect, the new behavior, and the proof. For example: ?A later receipt line without a warehouse used to leave earlier stock postings. Submission now runs inside one database transaction, and a regression test proves the persisted row is unchanged after rejection.? That description is more useful than ?improved error handling? because a reviewer can reproduce it and identify the exact guarantee.
+Describe the trigger, the previous defect, the new behavior, and the proof. For example: "A later receipt line without a warehouse used to leave earlier stock postings. Submission now runs inside one database transaction, and a regression test proves the persisted row is unchanged after rejection." That description is more useful than "improved error handling" because a reviewer can reproduce it and identify the exact guarantee.

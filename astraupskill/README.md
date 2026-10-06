@@ -6,7 +6,7 @@ Start with a disposable local database. This application contains fictional acco
 
 ## Prerequisites and glossary
 
-**Prerequisites:** TypeScript with `async`/`await`, enough SQL to read an `UPDATE` and say what a transaction is, and comfort reading a request in browser developer tools. The feature-flag workshop in `05 Numbered Experiments/e12` is a lighter predecessor if this is your first course with server-side versions and roles.
+**Prerequisites:** TypeScript with `async`/`await`, enough SQL to read an `UPDATE` and say what a transaction is, and comfort reading a request in browser developer tools.
 
 | Term | Meaning here | Where in this project |
 |---|---|---|

@@ -29,3 +29,17 @@ The final API run completed with **39 of 39 tests passed and process exit code 0
 The TypeScript production build completed successfully. All **seven distinct Chromium browser scenarios passed**. After visual review found the overlapping status banner, five affected scenarios were rerun successfully with an additional non-overlap assertion. Those five are rechecks, not five extra unique feature tests. Seven final screenshots were visually reviewed and linked from the course index. The package manifest and lockfile root dependencies, development dependencies, and Node engine match.
 
 The combined count is **46 unique checks: 39 API/process tests plus seven browser scenarios**. Verification ran on Node 22.16.0 with builtin SQLite, Fastify 5.8.2, TypeScript 5.9.3, Vitest 3.2.4, and Chromium 148. All generated credentials and database fixtures stayed in disposable verification directories. No live business workspace or external account was used. The central implementation report retains the per-project evidence and delivery hashes.
+
+## Status note (2026-10-06 documentation pass)
+
+The delivery figures above are a frozen record; they were not re-run in this pass because no dependencies were installed. What was re-checked against the current code:
+
+- **Test count:** 39 = `tests/concurrency.test.ts` 8 + `tests/erp.test.ts` 6 + `tests/integrity.test.ts` 25, counted from `it(` blocks.
+- **Browser scenarios:** `scripts/verify_browser.py` defines seven: `masters`, `projects`, `conflict`, `permissions`, `uncertain`, `layout`, `pagination`.
+- **Limits:** the 10,000-record / 1,000-session cap (`src/domain/state-schema.ts:341`) and the 20 MiB `MAX_BYTES` (`:345`) match the text.
+- **Practice checks:** warm-ups W2 and W3 in [05-PRACTICE](05-PRACTICE.md) were executed as dependency-free `node --test` files on Node 22.16.0 and passed. W4's vitest command was not run.
+- **Corrections in this pass:**
+  - 01-CODEBASE-MAP previously placed the authorization decision in `security.ts`; it lives in `erp-service.ts`.
+  - 04 referenced a `unit-final.log` that is not in the repo.
+  - Worked Assignment D named service methods that do not exist and claimed duplicate codes return 409; they return 400.
+

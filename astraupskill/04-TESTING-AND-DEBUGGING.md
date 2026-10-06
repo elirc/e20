@@ -17,7 +17,7 @@ A timeout is not a passing result. Read whether the operation failed, the fixtur
 
 ## Fast feedback first
 
-The full suite takes about 453 seconds (`unit-final.log`); nobody runs that per edit. Run one case:
+The full suite is slow, because the concurrency tests start real server processes (`tests/request-worker.ts`) and the whole run is forced onto one worker (`package.json`: `--maxWorkers=1 --no-file-parallelism`). Nobody runs that per edit. Run one case:
 
 ```powershell
 npx vitest run tests/integrity.test.ts -t "rolls back an entire receipt"
@@ -55,7 +55,7 @@ Do not copy this expected result into a mock implementation. The race tests use 
 
 ## Debug from the first unexpected observation
 
-Put breakpoints at `getContext`, `editMaster` or the relevant submit method, and the write inside `SnapshotDatabase.access`. Inspect the submitted expected version and the current stored version. Step through validation before stepping into serialization details.
+Put breakpoints at `getContext` (`src/app.ts:50`), `editMaster` (`src/domain/erp-service.ts:2098`) or the relevant submit method, and the write branch inside `SnapshotDatabase.access` (`src/domain/database.ts:68-75`). Inspect the submitted expected version and the current stored version. Step through validation before stepping into serialization details.
 
 If an API request fails, preserve the response status and request ID. Avoid logging the bearer, passwords, or the entire credentials file. A 401 suggests session validity; 403 suggests host, origin, membership, or role policy; 409 suggests a stale version or an explicit business conflict. A 500 intentionally hides internal details and reports that the operation was not accepted.
 

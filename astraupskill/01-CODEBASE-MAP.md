@@ -1,6 +1,6 @@
 # 1. Read the code as a request journey
 
-Begin at [the server entry point](../src/server.ts). It resolves the database path and binds to the loopback address. [Application setup](../src/app.ts) builds Fastify, reads the three browser assets, registers request guards, and connects routes to the ERP service. The build emits `dist/src/server.js`; the start script now points to that actual output.
+Begin at [the server entry point](../src/server.ts). It resolves the database path and binds to the loopback address. [Application setup](../src/app.ts) builds Fastify, reads the three browser assets, registers request guards, and connects routes to the ERP service. The build emits `dist/src/server.js`, which is what `npm start` runs (`package.json`).
 
 The workbench in [public/workbench.js](../public/workbench.js) owns the selected module, company, current list, page, session, and open editor. A module definition specifies labels and input types. For example, the customer editor submits a name, code, optional contact information, and an edit-only status. It does not submit the record's company or creation metadata as editable fields.
 
@@ -36,7 +36,7 @@ For the underlying API contract, consult the [Node 22 SQLite documentation](http
 
 ## Function index for `src/domain/erp-service.ts`
 
-The service is 2607 lines in one class. Section banners (`// ===== Sales ...`, `Purchasing`, `Accounting`, `Stock`) were added in the fix pass so an editor's outline shows the areas. Entry points and the authorization check, with line numbers as of this pass (re-generate with `grep -n "^  [a-zA-Z]*(" src/domain/erp-service.ts`):
+The service is one 2,606-line class. Section banners (`// ===== Sales ...` at line 496, `Purchasing` at 828, `Accounting` at 1194, `Stock` at 1333) make an editor's outline usable. Entry points, with line numbers re-checked 2026-10-06 (re-generate with `grep -n "^  [a-zA-Z]*(" src/domain/erp-service.ts`):
 
 | method | line |
 |---|---|
@@ -48,12 +48,14 @@ The service is 2607 lines in one class. Section banners (`// ===== Sales ...`, `
 | `createLead` | 477 |
 | `createQuotation` | 497 |
 | `submitQuotation` | 522 |
+| `convertQuotationToSalesOrder` | 540 |
 | `createSalesOrder` | 596 |
 | `submitSalesOrder` | 634 |
 | `createSalesInvoice` | 679 |
 | `submitSalesInvoice` | 723 |
 | `createPurchaseOrder` | 829 |
 | `submitPurchaseOrder` | 865 |
+| `approvePurchaseOrder` | 899 |
 | `createPurchaseReceipt` | 939 |
 | `submitPurchaseReceipt` | 980 |
 | `createPurchaseInvoice` | 1070 |
@@ -67,6 +69,16 @@ The service is 2607 lines in one class. Section banners (`// ===== Sales ...`, `
 | `createProject` | 1465 |
 | `createTask` | 1486 |
 | `createTimesheet` | 1510 |
+| `editMaster` (generic edit/delete for eight master collections) | 2098 |
+| `postStock` (private) | 2446 |
+| `requireRoles` (private) | 2499 |
 
-The authorization decision lives in `src/domain/security.ts` (permission lookup) and surfaces in the service as the `DomainError("Forbidden entity access", 403)` thrown at line 2095: every submit/post entry resolves the caller's permission before reading the aggregate, which is the answer to this course's checkpoint question.
+## Where authorization lives
 
+All of it is in the service; `src/domain/security.ts` only hashes passwords and tokens. There are three layers, and every one of them runs inside the `store.access` transaction:
+
+1. **Identity and company.** `authenticate` (`erp-service.ts:250-262`) rejects a missing or non-64-hex token, finds an unexpired session by token hash, requires the user to still be `active`, then calls `store.assertContextCompany` to require an explicit company the user belongs to.
+2. **Operation roles.** `requireRoles` (`erp-service.ts:2499-2506`) is the first line of almost every public method, for example `submitPurchaseReceipt` allows `company_admin`, `purchase_user` and `inventory_user` (lines 981-985). `system_admin` always passes.
+3. **Entity reads.** `canReadEntity` (`erp-service.ts:2070-2091`) maps an entity type to reader roles and always admits `system_admin`, `company_admin` and `auditor`. `requireEntityRead` (lines 2093-2096) turns a refusal into `DomainError("Forbidden entity access", 403)`. It guards comments and attachments (call sites at lines 1540, 1561, 1589, 1614), and `search` filters results with `canReadEntity` (line 1762). An unknown type is refused because of `Object.hasOwn(policy, type)`.
+
+Because `authenticate` reads the user's roles from the state loaded inside the transaction, a role revoked a moment ago is already in effect for the next request. `refreshes roles at the transaction boundary` (`tests/integrity.test.ts:149`) pins that.
